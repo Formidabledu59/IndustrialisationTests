@@ -65,3 +65,7 @@ Pour toute question, nos mails :
 - lea.dequeirosdacunhad@ecoles-epsi.net
 - hugo.bleuze@ecoles-epsi.net
 - ayoub.fathallah@ecoles-epsi.net
+
+
+## Erreur
+- les .py n'arrivent pas a s'exécuter correctement.
