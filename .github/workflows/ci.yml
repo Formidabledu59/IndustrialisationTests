@@ -27,4 +27,4 @@ jobs:
         run: python "Remplir un formulaire dinscription\form_filler.py"
 
       - name: Exécuter le script Selenium
-        run: python "Extraction dinformation\scraper.py"
+        run: python "Tests et intégration continue\test_form_filler.py"
