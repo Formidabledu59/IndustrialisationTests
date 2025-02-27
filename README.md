@@ -44,7 +44,7 @@ Clonez ce dépôt :
 
 
 ## Exécution
-- Pour exécuter les scripts Selenium :
+- Pour exécuter les scripts Selenium : 
   ```sh
   python script.py
   ```
