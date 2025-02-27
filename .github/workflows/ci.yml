@@ -57,6 +57,7 @@ jobs:
   notify:
     needs: release
     runs-on: ubuntu-22.04
+    if: always()  # Force l'exécution du job même si un précédent échoue
     steps:
       - name: Envoyer une notification Discord
         run: |
