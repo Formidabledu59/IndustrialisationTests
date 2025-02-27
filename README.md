@@ -66,6 +66,9 @@ Pour toute question, nos mails :
 - hugo.bleuze@ecoles-epsi.net
 - ayoub.fathallah@ecoles-epsi.net
 
+## Resultat Notif Discord
+![ Notif Discord](image.png)
+
 
 ## Erreur
 - les .py n'arrivent pas a s'exécuter correctement.
