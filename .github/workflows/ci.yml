@@ -1,4 +1,4 @@
-name: CI
+name: Selenium Workflow
 
 on:
   push:
@@ -21,38 +21,6 @@ jobs:
       - name: Installer les dépendances
         run: |
           python -m pip install --upgrade pip
-          pip install selenium
+          pip install -r requirements.txt
 
-      - name: Installer Google Chrome
-        run: |
-          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
-          sudo apt-get update
-          sudo apt-get install -y google-chrome-stable
 
-      - name: Vérifier l'installation de Chrome
-        run: google-chrome --version
-
-      - name: Installer ChromeDriver
-        run: |
-          CHROME_VERSION=$(google-chrome --version | grep -oP '[0-9]+\.[0-9]+\.[0-9]+')
-          LATEST_DRIVER=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE_$CHROME_VERSION)
-          wget -N https://chromedriver.storage.googleapis.com/${LATEST_DRIVER}/chromedriver_linux64.zip
-          unzip chromedriver_linux64.zip
-          sudo mv chromedriver /usr/local/bin/
-          sudo chmod +x /usr/local/bin/chromedriver
-
-      - name: Vérifier l'installation de ChromeDriver
-        run: chromedriver --version
-
-      - name: Vérifier si Chrome fonctionne avec un affichage virtuel
-        run: |
-          Xvfb :99 -screen 0 1920x1080x24 &
-          export DISPLAY=:99
-          google-chrome --headless --no-sandbox --disable-gpu --remote-debugging-port=9222 https://www.google.com & sleep 5
-          curl -I http://localhost:9222
-
-      - name: Run tests avec debug
-        run: |
-          export DISPLAY=:99
-          xvfb-run --server-args="-screen 0 1920x1080x24" python -m unittest discover -s tests -p "test_*.py"
