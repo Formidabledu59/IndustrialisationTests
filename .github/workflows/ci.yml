@@ -23,8 +23,4 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Éxécuter les tests
-        run: python "Remplir un formulaire dinscription\form_filler.py"
 
-      - name: Exécuter le script Selenium
-        run: python "Extraction dinformation\scraper.py"
