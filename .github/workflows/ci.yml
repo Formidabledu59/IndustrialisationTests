@@ -23,15 +23,30 @@ jobs:
           python -m pip install --upgrade pip
           pip install selenium
 
-      - name: Installer ChromeDriver
+      - name: Installer Google Chrome
         run: |
+          wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+          sudo sh -c 'echo "deb [arch=amd64] http://dl.google.com/linux/chrome/deb/ stable main" >> /etc/apt/sources.list.d/google-chrome.list'
           sudo apt-get update
-          sudo apt-get install -y unzip xvfb libxi6 libgconf-2-4
-          wget -N https://chromedriver.storage.googleapis.com/2.41/chromedriver_linux64.zip
+          sudo apt-get install -y google-chrome-stable
+
+      - name: Vérifier l'installation de Chrome
+        run: google-chrome --version
+
+      - name: Télécharger et installer ChromeDriver
+        run: |
+          sudo apt-get install -y curl unzip
+          CHROME_VERSION=$(google-chrome --version | awk '{print $3}' | cut -d'.' -f1)
+          DRIVER_VERSION=$(curl -sS https://chromedriver.storage.googleapis.com/LATEST_RELEASE_${CHROME_VERSION})
+          wget -N https://chromedriver.storage.googleapis.com/${DRIVER_VERSION}/chromedriver_linux64.zip
           unzip chromedriver_linux64.zip
           sudo mv chromedriver /usr/local/bin/
           sudo chmod +x /usr/local/bin/chromedriver
 
-      - name: Run tests
+      - name: Vérifier l'installation de ChromeDriver
+        run: chromedriver --version
+
+      - name: Run tests avec debug
         run: |
-          xvfb-run --server-args='-screen 0 1024x768x24' python -m unittest discover -s "Tests et intégration continue" -p "test_*.py"
+          export DISPLAY=:99
+          xvfb-run --server-args="-screen 0 1920x1080x24" python -m unittest discover -s tests -p "test_*.py"

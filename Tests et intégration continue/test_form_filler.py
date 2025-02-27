@@ -7,8 +7,10 @@ import time
 class TestFormFiller(unittest.TestCase):
     def setUp(self):
         chrome_options = webdriver.ChromeOptions()
-        chrome_options.add_argument("--window-position=2000")
-        self.driver = webdriver.Chrome(chrome_options)
+        chrome_options.add_argument("--headless")
+        chrome_options.add_argument("--no-sandbox")
+        chrome_options.add_argument("--disable-dev-shm-usage")
+        self.driver = webdriver.Chrome(options=chrome_options)
         self.driver.implicitly_wait(10)
         self.driver.maximize_window()
         self.driver.get("https://espace-abonnement.lavoixdunord.fr/essentielle")
