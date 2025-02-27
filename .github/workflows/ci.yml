@@ -8,6 +8,9 @@ on:
 jobs:
   selenium:
     runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        python-version: [3.8, 3.9, 3.10, 3.11]
 
     steps:
       - name: Checkout du code
@@ -16,7 +19,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.9
+          python-version: ${{ matrix.python-version }}
 
       - name: Installer les dépendances (sans requirements.txt)
         run: |
@@ -26,3 +29,38 @@ jobs:
       - name: Exécuter les tests avec unittest
         run: |
           python -m unittest discover -s "Extraction dinformation" -p "scraper*.py"
+
+      - name: Générer un rapport de test
+        run: |
+          pytest --junitxml=report.xml
+
+      - name: Upload test report
+        uses: actions/upload-artifact@v2
+        with:
+          name: test-report
+          path: report.xml
+
+  release:
+    needs: selenium
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Checkout du code
+        uses: actions/checkout@v2
+
+      - name: Créer une release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: report.xml
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+  notify:
+    needs: release
+    runs-on: ubuntu-22.04
+    steps:
+      - name: Envoyer une notification Discord
+        run: |
+          curl -H "Content-Type: application/json" \
+          -X POST \
+          -d '{"content": "Les tests sont terminés et une nouvelle release a été déployée."}' \
+          ${{ secrets.DISCORD_WEBHOOK_URL }}
