@@ -25,4 +25,4 @@ jobs:
 
       - name: Exécuter les tests avec unittest
         run: |
-          python -m unittest discover -s tests -p "test_*.py"
+          python -m unittest discover -s "Tests et intégration continue" -p "test_*.py"
