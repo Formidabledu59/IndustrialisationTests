@@ -25,4 +25,4 @@ jobs:
 
       - name: Exécuter les tests avec unittest
         run: |
-          python -m unittest discover -s "Tests et intégration continue" -p "test_scraper*.py"
+          python -m unittest discover -s "Extraction dinformation" -p "scraper*.py"
